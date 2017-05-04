@@ -31,7 +31,8 @@ private:
 	int m_cap_btn_cnt = 0;
 public:
 	C한이음_윈도우기본Dlg(CWnd* pParent = NULL);	// 표준 생성자입니다.
-	void myMenuClick(POINT point);
+
+	void myMenuClick(POINT point);	//재근추가) 메뉴 클릭 로직
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD___DIALOG };
@@ -57,5 +58,5 @@ public:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual BOOL PreTranslateMessage(MSG* pMsg);	//재근추가) 키눌림. 키는 리소스->Accelerator를 참고
 };

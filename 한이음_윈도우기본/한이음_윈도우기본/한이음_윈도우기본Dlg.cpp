@@ -22,7 +22,7 @@ C한이음_윈도우기본Dlg::C한이음_윈도우기본Dlg(CWnd* pParent /*=NULL*/)
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-void C한이음_윈도우기본Dlg::myMenuClick(POINT point)
+void C한이음_윈도우기본Dlg::myMenuClick(POINT point)	//재근추가) 메뉴 클릭 기존 로직을 함수화만 시켜놨음.
 {
 	CMenu menu;
 	menu.LoadMenu(IDR_MENU1);
@@ -147,7 +147,7 @@ void C한이음_윈도우기본Dlg::OnPaint()
 		dc.SetBkMode(TRANSPARENT);
 		dc.SetTextColor(RGB(0, 0, 0));
 		dc.TextOut(5, CAPTION_HEIGHT + 5, L"파일(F)");
-		dc.TextOut(5 + MENU_WIDTH * 1, CAPTION_HEIGHT + 6, L"편집(E)");
+		dc.TextOut(5 + MENU_WIDTH * 1, CAPTION_HEIGHT + 6, L"편집(E)");	//재근 추가) 제목을 늘림
 		dc.TextOut(5 + MENU_WIDTH * 2, CAPTION_HEIGHT + 6, L"검색(S)");
 		dc.TextOut(5 + MENU_WIDTH * 3, CAPTION_HEIGHT + 6, L"설정(O)");
 		dc.TextOut(5 + MENU_WIDTH * 4, CAPTION_HEIGHT + 6, L"도움말(H)");
@@ -185,8 +185,8 @@ void C한이음_윈도우기본Dlg::OnLButtonDown(UINT nFlags, CPoint point)
 		GetCursorPos(&mp_last_pos); // 절대 좌표 
 		Invalidate(TRUE);
 	}
-	else if (point.y < MENU_HEIGHT && point.x<MENU_HEIGHT * 5) {
-		
+	else if (point.y < MENU_HEIGHT && point.x<MENU_HEIGHT * 5) {//재근 추가) 메뉴가 5개. 5개를 넘어가면 작동치않게
+		myMenuClick(point);	//재근 추가) 클릭하는 거 함수로 변경
 	}
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
@@ -254,14 +254,16 @@ BOOL C한이음_윈도우기본Dlg::OnCommand(WPARAM wParam, LPARAM lParam)
 }
 
 
+//재근 추가) VK_MENU alt키를 누른 상태에서 메뉴키를 호출함
+//대화상자에는 PreTranslateMessage이 없어서 클래스 재정의를 통해 추가하였습니다.
 BOOL C한이음_윈도우기본Dlg::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	if (GetKeyState(VK_MENU) < 0) {// VK_MENU alt키		
+	if (GetKeyState(VK_MENU) < 0) {	//VK_MENU는 윈도우에서 Alt 키를 뜻합니다.
 		POINT point;
 		if (pMsg->message == WM_KEYDOWN && pMsg->wParam == 'F' || pMsg->wParam == 'f') {
-			point.x = 50;
-			myMenuClick(point);
+			point.x = 50;	//50은 어차피 메뉴 중간값으로 가면 myMenuClick이 처리함.
+			myMenuClick(point);	//myMenuClick을 일일이 나열할 수 밖에 없는건 alt 키만 눌렸을 경우도 있어서 
 		}
 		else if (pMsg->message == WM_KEYDOWN && pMsg->wParam == 'E' || pMsg->wParam == 'e') {
 			point.x = 100;
